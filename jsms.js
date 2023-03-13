@@ -33,7 +33,8 @@ const checkBoundary = (x, y, modifier = 0) => {
         topRight: (boundaries.right && boundaries.top),
         bottomRight: (boundaries.right && boundaries.bottom),
         bottomLeft: (boundaries.left && boundaries.bottom),
-    }
+    };
+    
     return {...boundaries, ...corners};
 };
 
@@ -56,4 +57,3 @@ const userBoard = [];
 printBoard(gameBoard);
 printBoard(userBoard);
 
-console.log(checkBoundary(0, 7, 3));
