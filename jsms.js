@@ -14,9 +14,11 @@ REPRESENTED AS AN ARRAY FOR USE IN REACT
     // '1' Mine
 // /key
 
-const height = 6;
-const width = 8;
+const height = 8;
+const width = 10;
 
+
+//helpers
 const checkBoundary = (x, y, modifier = 0) => {
     //returns object of boundary booleans
     const thisHeight = height;
@@ -34,17 +36,40 @@ const checkBoundary = (x, y, modifier = 0) => {
         bottomRight: (boundaries.right && boundaries.bottom),
         bottomLeft: (boundaries.left && boundaries.bottom),
     };
+    const allBoundaries = {
+        ...boundaries,
+        ...corners,
+        total: (corners.topLeft && corners.bottomRight),
+    };
 
-    return {...boundaries, ...corners};
+    return allBoundaries;
 };
 
+const checkInboundCell = (x, y) => {
+    if( ((x >= 0) && (x <= width-1)) && ((y <= height-1) && (y >= 0)) ){
+        return true;
+    }
+    return false;
+};
+
+
+//game functions
 const generateGameBoard = (gameBoard, firstClickX, firstClickY) => {
     for(let i = 0; i < width; i++){
         const thisColumn = [];
         for(let j = 0; j < height; j++){
-            thisColumn.push(Math.random() >= 0.72 ? 1 : 0);
+            thisColumn.push(Math.random() >= 0.70 ? 1 : 0);
         }
         gameBoard.push(thisColumn);
+    }
+
+    //clears out small region around first click
+    for(let i = firstClickX - 2; i < firstClickX + 2; i++){
+        for(let j = firstClickY - 2; j < firstClickY + 2; j++){
+            if(checkInboundCell(i, j)){
+                gameBoard[i][j] = 0;
+            }
+        }
     }
 };
 
@@ -57,7 +82,7 @@ const popCell = () => {};
 const regionClear = () => {};
 
 
-
+//tools & testing
 const printBoard = (board) => {
     for(let j = height - 1; j >= 0; j--){
         const temp = [];
@@ -70,7 +95,5 @@ const printBoard = (board) => {
 
 const gameBoard = [];
 const userBoard = [];
-generateGameBoard(gameBoard);
+generateGameBoard(gameBoard, 9, 0);
 printBoard(gameBoard);
-// printBoard(userBoard);
-
