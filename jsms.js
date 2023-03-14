@@ -73,16 +73,21 @@ const generateGameBoard = (gameBoard, userBoard, firstClickX, firstClickY) => {
             }
         }
     }
+    leftClick(gameBoard, userBoard, firstClickX, firstClickY);
 };
 
 const leftClick = (game, user, x, y) => {
     const thisCellValue = game[x][y];
+    const thisUserValue = user[x][y];
     switch(thisCellValue){
         case 1:
-            if(user[x][y] === 'U');
+            if(thisUserValue === 'U');
             console.log('You Lose');
         case 0:
-            if(user[x][y] === 'U'){
+            if(thisUserValue === 'U' && mineCount(game, x, y) === 0){
+                regionClear(game, user, x, y);
+            } 
+            else if(thisUserValue === 'U'){
                 user[x][y] = mineCount(game, x, y);
             }
     }
@@ -129,9 +134,28 @@ const mineCount = (board, x, y) => {
     return totalMines;
 };
 
-const popCell = () => {};
-
-const regionClear = () => {};
+const regionClear = (game, user, x, y) => {
+    const mines = mineCount(game, x, y);
+    if(mines === 0 && user[x][y] === 'U' && game[x][y] === 0){
+        user[x][y] = 0;
+        const clearNext = (game, user, xMod, yMod) => {
+            const newX = x + xMod;
+            const newY = y + yMod;
+            if(checkInboundCell(newX, newY)){
+                regionClear(game, user, newX, newY);
+            }
+        };
+        
+        clearNext(game, user, -1, 0); //left
+        clearNext(game, user, -1, 1); //top left
+        clearNext(game, user, 0, 1); //top
+        clearNext(game, user, 1, 1); //top right
+        clearNext(game, user, 1, 0); //right
+        clearNext(game, user, 1, -1); //bottom right
+        clearNext(game, user, 0, -1) //bottom
+        clearNext(game, user, -1, -1) //bottom left
+    }
+};
 
 
 //tools & testing
@@ -147,10 +171,6 @@ const printBoard = (board) => {
 
 const gameBoard = [];
 const userBoard = [];
-generateGameBoard(gameBoard, userBoard, 9, 0);
+generateGameBoard(gameBoard, userBoard, 4, 4);
 printBoard(gameBoard);
-leftClick(gameBoard, userBoard, 1, 1);
-rightClick(userBoard, 3, 3);
-rightClick(userBoard, 4, 4);
-rightClick(userBoard, 4, 4);
 printBoard(userBoard);
