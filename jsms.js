@@ -83,6 +83,7 @@ const leftClick = (game, user, x, y) => {
         case 1:
             if(thisUserValue === 'U');
             console.log('You Lose');
+            break;
         case 0:
             if(thisUserValue === 'U' && mineCount(game, x, y) === 0){
                 regionClear(game, user, x, y);
@@ -90,6 +91,7 @@ const leftClick = (game, user, x, y) => {
             else if(thisUserValue === 'U'){
                 user[x][y] = mineCount(game, x, y);
             }
+            break;
     }
 };
 
