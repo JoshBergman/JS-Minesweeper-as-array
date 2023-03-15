@@ -81,8 +81,9 @@ const leftClick = (game, user, x, y) => {
     const thisUserValue = user[x][y];
     switch(thisCellValue){
         case 1:
-            if(thisUserValue === 'U');
-            console.log('You Lose');
+            if(thisUserValue === 'U'){
+                console.log('You Lose');
+            }
             break;
         case 0:
             if(thisUserValue === 'U' && mineCount(game, x, y) === 0){
